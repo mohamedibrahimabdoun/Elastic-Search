@@ -1,0 +1,63 @@
+/home/elastic/elasticsearch-6.5.0/bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12 --name master --dns master.myelkdomain.com --ip 192.168.0.20
+
+/home/elastic/elasticsearch-6.5.0/bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12  --name node-01 --dns node-01.myelkdomain.com --ip 192.168.0.21
+
+/home/elastic/elasticsearch-6.5.0/bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12 --name node-02 --dns  node-02.myelkdomain.com --ip 192.168.0.22
+
+/home/elastic/elasticsearch-6.5.0/bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12 --name node-03 --dns  node-03.myelkdomain.com --ip 192.168.0.23
+
+
+ ~/elasticsearch-6.5.0/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+
+  ~/elasticsearch-6.5.0/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+ 
+ ~/elasticsearch-6.5.0/bin/elasticsearch-keystore add xpack.security.http.ssl.truststore.secure_password 
+ 
+  ~/elasticsearch-6.5.0/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password 
+
+  
+  
+  
+~/elasticsearch-6.5.0/bin/elasticsearch-keystore remove  xpack.security.transport.ssl.keystore.secure_password
+~/elasticsearch-6.5.0/bin/elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password 
+~/elasticsearch-6.5.0/bin/elasticsearch-keystore remove xpack.security.http.ssl.truststore.secure_password 
+~/elasticsearch-6.5.0/bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password 
+
+  
+  /x-pack/setup-passwords
+  
+  
+  ~/elasticsearch/bin/elasticsearch -d -p pid
+  
+  tail -100f  ~/elasticsearch/logs/elk-cluser.log 
+  
+   ps aux |grep elastic
+   
+   
+   vim /home/elastic/elasticsearch-6.5.0/config/elasticsearch.yml 
+   
+   #########################################################################
+   
+   /home/elastic/elasticsearch-6.5.0/bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12 --name master 
+
+/home/elastic/elasticsearch-6.5.0/bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12  --name node-01_v2 
+
+/home/elastic/elasticsearch-6.5.0/bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12 --name node-02_v2 
+
+/home/elastic/elasticsearch-6.5.0/bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12 --name node-03 
+   
+   
+   
+   
+   
+   org.elasticsearch.transport.RemoteTransportException: [node-02][10.10.1.22:9300][internal:discovery/zen/unicast]
+Caused by: org.elasticsearch.ElasticsearchSecurityException: missing authentication token for action [internal:discovery/zen/unicast]org.elasticsearch.transport.RemoteTransportException: [node-02][10.10.1.22:9300][internal:discovery/zen/unicast]
+Caused by: org.elasticsearch.ElasticsearchSecurityException: missing authentication token for action [internal:discovery/zen/unicast]
+
+
+ exception caught on transport layer [NettyTcpChannel{localAddress=, closing connection
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received close_notify during handshake
+
+
+[WARN ][o.e.x.s.t.n.SecurityNetty4ServerTransport] [master] exception caught on transport layer [NettyTcpChannel{localAddress=0.0.0.0/0.0.0.0:9300, remoteAddress=/10.10.1.21:58222}], closing connection
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received close_notify during handshake

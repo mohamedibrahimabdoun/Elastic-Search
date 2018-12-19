@@ -2,7 +2,7 @@
 
 
 192.168.0.20  master.myelkdomain.com
-192.168.0.21  node-01.myelkdomain.com 
-192.168.0.22  node-02.myelkdomain.com
-192.168.0.23  node-03.myelkdomain.com
+192.168.0.21  node01.myelkdomain.com 
+192.168.0.22  node02.myelkdomain.com
+192.168.0.23  node03.myelkdomain.com
 

@@ -1,0 +1,85 @@
+Instructions & Tasks
+You work as a system administrator and are in charge of a 3-node Elasticsearch cluster that has been used for ad-hoc, non-sensitive data analysis. However, your Business Intelligence office would like to start using this cluster to analyze some sensitive customer data, so they need you to secure the Elasticsearch cluster to meet the following data security requirements:
+
+Cluster network encryption
+Client network encryption
+User authentication
+To do this, you will need to install X-Pack, which has been pre-downloaded to /home/elastic/x-pack.zip. After installation, you will need to create a certificate authority (CA) using X-Pack's certutil tool, and then use the CA to create node certificates for each Elasticsearch node. The CA and node certificates should be password-protected and stored in the /home/elastic/elasticsearch/config/certs directory.
+
+To support full verification mode, the node certificates should be generated as follows:
+
+Name	DNS	IP	Filename	Password
+node1	ip-10-0-1-101.ec2.internal	10.0.1.101	node1.p12	elastic_node1
+node2	ip-10-0-1-102.ec2.internal	10.0.1.102	node2.p12	elastic_node2
+node3	ip-10-0-1-103.ec2.internal	10.0.1.103	node3.p12	elastic_node3
+Don’t forget to add the password you used to protect the certificate package to the local Elasticsearch keystore on each node as both the truststore and keystore secure password.
+
+help
+check_box_outline_blank
+Install X-Pack on each Elasticsearch node.
+help
+check_box_outline_blank
+Use the X-Pack `certutil` tool to generate a certificate authority.
+help
+check_box_outline_blank
+Use the X-Pack `certutil` tool with the CA to generate a PKCS#12 keystore.
+help
+check_box_outline_blank
+Configure transport network encryption and start Elasticsearch.
+help
+check_box_outline_blank
+Use the X-Pack `setup-passwords` tool to set the password for each built-in user.
+help
+check_box_outline_blank
+Configure HTTP network encryption and restart Elasticsearch.
+
+
+
+###############################################################
+
+1) Install X-Pack on each Elasticsearch node.
+---------------------------------------------
+sudo su - elastic
+Install X-Pack
+Change directory to the Elasticsearch installation path.
+cd /home/elastic/elasticsearch
+Install X-Pack with:
+./bin/elasticsearch-plugin install file:///home/elastic/x-pack.zip
+Grant additional permissions for X-Pack at the prompts by typing Y and pressing Enter.
+Repeat
+Repeat these steps for node2 and node3.
+
+
+2- Use the X-Pack `certutil` tool to generate a certificate authority.
+-----------------------------------------------------------------------
+Log In
+Using the Secure Shell (SSH), log in to node1 as cloud_user via the public IP address.
+Become the elastic user with:
+sudo su - elastic
+Generate the Certificate Authority (CA)
+Create a certs directory.
+mkdir /home/elastic/elasticsearch/config/certs
+Change directory to the certs directory.
+cd /home/elastic/elasticsearch/config/certs
+Create a CA certificate with:
+/home/elastic/elasticsearch/bin/x-pack/certutil ca
+Use the default output file.
+Set the CA password to elastic_ca.
+Disseminate the CA to the Cluster
+Remote copy the CA to node2.
+scp /home/elastic/elasticsearch/config/certs/elastic-stack-ca.p12 cloud_user@10.0.1.102:/tmp
+Remote copy the CA to node3.
+scp /home/elastic/elasticsearch/config/certs/elastic-stack-ca.p12 cloud_user@10.0.1.103:/tmp
+Install the CA on Nodes 2 and 3
+Using the Secure Shell (SSH), log in to node2 as cloud_user via the public IP address.
+Become the root user with:
+sudo su -
+Change the ownership of the CA.
+chown elastic:elastic /tmp/elastic-stack-ca.p12
+Become the elastic user with:
+su - elastic
+Create a certs directory.
+mkdir /home/elastic/elasticsearch/config/certs
+Move the CA into the certs directory.
+mv /tmp/elastic-stack-ca.p12 /home/elastic/elasticsearch/config/certs/.
+Repeat these steps for node3.
