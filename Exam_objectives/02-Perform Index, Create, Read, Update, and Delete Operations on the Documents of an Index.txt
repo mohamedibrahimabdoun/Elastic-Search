@@ -1,0 +1,48 @@
+* Create/index documents
+* Bulk index documents with the _bulk API
+* Read documents
+* Perform doc updates
+* Perform script updates
+* Delete documents
+
+-------------------------------------------------------
+GET _cat/indices?v
+
+#create a document 
+
+PUT /index-1/doc/1
+{
+  "firstname" : "Mohamed",
+  "lastname" : "Osman"
+}
+
+#Read a document
+GET /index-1/doc/1
+
+#update a document
+
+POST index-1/doc/1/_update
+{
+  "doc": {
+    "firstname": "Ibrahim",
+    "middle_initials": "0"
+  }
+}
+
+
+#update a document scriptted update
+
+POST index-1/doc/1/_update
+{
+  "script": {
+    "source": "ctx._source.remove('middle_initials')"
+  }
+}
+
+
+# Delete a document
+
+DELETE index-1/doc/1
+
+#Using the Bulk API
+curl XPOST 'http://192.168.0.21:9200/bank/account/_bulk?pretty' -H "Content-Type: application/x-ndjson" --data-binary @accounts.json

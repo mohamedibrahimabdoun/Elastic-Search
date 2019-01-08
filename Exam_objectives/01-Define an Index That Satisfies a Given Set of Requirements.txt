@@ -1,0 +1,75 @@
+* Create index with specific shard counts
+* Create indexes with explicit mappings
+* List the indexes in a cluster
+* Read the anatomy of any given index
+
+------------------------------------------
+
+GET _cat/indices?v
+
+GET shakespeare
+
+GET logs
+
+
+PUT bank
+{
+  "settings": {
+    "number_of_replicas": 1,
+    "number_of_shards": 2
+  }
+}
+
+#create Index with mapping
+
+PUT shakespeare
+{
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "speaker": {
+          "type" : "keyword"
+        },
+        "play_name": {
+        "type": "keyword"
+      },
+      "line_id": {
+        "type": "integer"
+      },
+      "speech_number" : {
+        "type" : "integer"
+      }
+      
+    }
+      }
+      
+    
+  }
+}
+
+
+PUT logs
+{
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "log": {
+      "properties": {
+        "geo":{
+          "properties":{
+            "corrdinates":{
+              "type": "geo_point"
+            }
+          }
+        }
+      }
+    }
+  
+  }
+}
